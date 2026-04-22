@@ -17,7 +17,7 @@ ZSH=${ZSH:-${ZDOTDIR:-$HOME/.config/zsh}}
 ZSH_CUSTOM=${ZSH_CUSTOM:-$ZSH/custom}
 
 # use antidote.lite - a zsh micro plugin manager based on zsdh_unplugged
-if [[ ! -e $ZSH_CUSTOM/antidote.lite/antidote.zsh ]]; then
+if [[ ! -e $ZSH_CUSTOM/lib/antidote.zsh ]]; then
   mkdir -p $ZSH/lib
   curl -fsSL -o $ZSH/lib/antidote.zsh \
   https://raw.githubusercontent.com/mattmc3/zsh_unplugged/main/antidote.lite.zsh
@@ -66,6 +66,12 @@ myplugins=(
 
 )
 
+# clone and load plugins
+plugin-clone $myplugins $myprompts $myutils
+plugin-load --kind path $myutils
+plugin-load --kind fpath $myprompts
+plugin-load $myplugins
+
 # set up history
 HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
@@ -75,12 +81,6 @@ setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY
 setopt APPEND_HISTORY
 export HISTTIMEFORMAT="%d/%m/%Y %H:%M] "
-
-# clone and load plugins
-plugin-clone $myplugins $myprompts $myutils
-plugin-load --kind path $myutils
-plugin-load --kind fpath $myprompts
-plugin-load $myplugins
 
 # pick your prompt (pure/powerlevel10k/starship)
 autoload -Uz promptinit
